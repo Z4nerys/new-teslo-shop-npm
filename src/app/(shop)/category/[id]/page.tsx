@@ -16,7 +16,6 @@ export default function ({ params }: Props) {
 
   return (
     <div>
-      HACER EL 404 personalizado. video 193
       <h1>Category page {id}</h1>
     </div>
   )
