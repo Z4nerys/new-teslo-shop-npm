@@ -1,22 +1,44 @@
+import { ProductGrid, Title } from "@/components";
+import { Category } from "@/interfaces";
+import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
 
 interface Props {
   params: {
-    id: string;
+    id: Category;
   }
 }
 
+const seedProducts = initialData.products
+
 export default function ({ params }: Props) {
-
+  
   const { id } = params;
-
-  if( id === 'kids') {
+  
+  /* if( id === 'kid') {
     notFound();
+  } */
+
+  const products = seedProducts.filter(product => product.gender === id)
+
+  const labels: Record<Category, string> = {
+    'men': 'para Hombres',
+    'women': 'para Mujeres',
+    'kid': 'para Niños',
+    'unisex': 'para todos'
   }
 
   return (
-    <div>
-      <h1>Category page {id}</h1>
-    </div>
+    <>
+      <Title 
+        title={`Articulos ${labels[id]}`}
+        subtitle={`Productos ${labels[id]}`}
+        className="mb-2"
+      />
+      Video 207
+      <ProductGrid
+        products={ products }
+      />
+    </>
   )
 }
