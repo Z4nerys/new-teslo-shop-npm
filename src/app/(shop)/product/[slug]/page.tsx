@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { initialData } from "@/seed/seed"
 import { titleFont } from "@/config/fonts"
+import { QuantitySelector, SizeSelector } from "@/components"
 
 interface Props {
   params: {
@@ -30,12 +31,14 @@ export default function ({ params }: Props) {
         </h1>
         <p className="text-lg mb-5">${product.price}</p>
 
+        <SizeSelector
+          selectedSize={product.sizes[0]}
+          availableSizes={product.sizes}
+        />
 
-        {/* Selector de tallas */}
-
-
-
-        {/* Selector de cantidad */}
+        <QuantitySelector
+          quantity={2}
+        />
 
         {/* Button */}
 
