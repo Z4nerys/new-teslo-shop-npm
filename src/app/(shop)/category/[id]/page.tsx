@@ -35,7 +35,6 @@ export default function ({ params }: Props) {
         subtitle={`Productos ${labels[id]}`}
         className="mb-2"
       />
-      Video 207
       <ProductGrid
         products={ products }
       />

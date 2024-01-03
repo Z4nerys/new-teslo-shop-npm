@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import { Swiper as SwiperObject } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules'
+import { Autoplay, FreeMode, Navigation, Thumbs } from 'swiper/modules'
 
 import 'swiper/css';
 
@@ -36,24 +36,49 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
                 }
                 spaceBetween={10}
                 navigation={true}
+                autoplay={{
+                    delay: 2500
+                }}
                 thumbs={{ swiper: thumbsSwiper }}
-                modules={[FreeMode, Navigation, Thumbs]}
+                modules={[FreeMode, Navigation, Thumbs, Autoplay]}
                 className="mySwiper2"
             >
                 {
                     images.map(image => (
-                        <SwiperSlide key={ image }>
+                        <SwiperSlide key={image}>
                             <Image
-                                width={ 1024 }
-                                height={ 800 }
+                                width={1024}
+                                height={800}
                                 src={`/products/${image}`}
-                                alt={ title }
+                                alt={title}
+                                className='rounded-lg object-cover'
+                            />
+                        </SwiperSlide>
+                    ))
+                }
+            </Swiper>
+            <Swiper
+                onSwiper={setThumbsSwiper}
+                spaceBetween={10}
+                slidesPerView={4}
+                freeMode={true}
+                watchSlidesProgress={true}
+                modules={[FreeMode, Navigation, Thumbs]}
+                className="mySwiper"
+            >
+                {
+                    images.map(image => (
+                        <SwiperSlide key={image}>
+                            <Image
+                                width={300}
+                                height={300}
+                                src={`/products/${image}`}
+                                alt={title}
                                 className='rounded-lg object-fill'
                             />
                         </SwiperSlide>
                     ))
                 }
-
             </Swiper>
         </div>
     )

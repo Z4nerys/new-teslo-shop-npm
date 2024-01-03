@@ -19,7 +19,7 @@ export const QuantitySelector = ({ quantity }: Props) => {
     }
 
     return (
-        <div className="flex">
+        <div className="flex items-center">
             <button onClick={() => onQuantityChange(-1)}>
                 <IoRemoveCircleOutline size={30} />
             </button>
