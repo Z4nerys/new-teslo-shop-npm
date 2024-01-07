@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import { Swiper as SwiperObject } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, FreeMode, Navigation, Thumbs } from 'swiper/modules'
+import { Autoplay, FreeMode, Navigation, Pagination, Thumbs } from 'swiper/modules'
 
 import 'swiper/css';
 
@@ -19,6 +19,7 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+import 'swiper/css/pagination';
 
 import './slideshow.css';
 
@@ -34,13 +35,14 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
                     '--swiper-pagination-color': '#fff',
                 } as React.CSSProperties
                 }
-                spaceBetween={10}
+                spaceBetween={0}
                 navigation={true}
+                pagination
                 autoplay={{
                     delay: 2500
                 }}
                 thumbs={{ swiper: thumbsSwiper }}
-                modules={[FreeMode, Navigation, Thumbs, Autoplay]}
+                modules={[FreeMode, Navigation, Thumbs, Autoplay, Pagination]}
                 className="mySwiper2"
             >
                 {
