@@ -1,7 +1,7 @@
 // https://tailwindcomponents.com/component/hoverable-table
+import Link from 'next/link';
 import { Title } from '@/components';
 
-import Link from 'next/link';
 import { IoCardOutline } from 'react-icons/io5';
 
 export default function() {
