@@ -77,7 +77,7 @@ export default function () {
               <span>Impuestos (15%)</span>
               <span className="text-right">$ 100</span>
 
-              <span className="mt-5 text-2xl">Total: (15%)</span>
+              <span className="mt-5 text-2xl">Total:</span>
               <span className="mt-5 text-2xl text-right">$ 100</span>
 
             </div>
