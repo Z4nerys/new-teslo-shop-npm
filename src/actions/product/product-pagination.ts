@@ -2,11 +2,11 @@
 
 import prisma from "@/lib/prisma";
 
-export const getPaginatedProductsWithImages = async() => {
+export const getPaginatedProductsWithImages = async () => {
 
     try {
         const products = await prisma.product.findMany({
-            include:{
+            include: {
                 ProductImage: { // incluya ProductImage y del productImage
                     take: 2, // solo 2 images
                     select: { //selecciono solo la url
@@ -15,12 +15,17 @@ export const getPaginatedProductsWithImages = async() => {
                 }
             }
         })
-        
-        console.log(products)
+
+        return {
+            products: products.map(product => ({
+                currentPage: 1,
+                totalPages: 10,
+                ...product,
+                images: product.ProductImage.map(image => image.url)
+            }))
+        }
 
     } catch (error) {
-        
+        throw new Error("No se pudo cargar los productos")
     }
-
-
 }
