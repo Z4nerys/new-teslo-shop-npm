@@ -2,7 +2,7 @@
 import { generatePaginationNumbers } from "@/utils"
 import clsx from "clsx"
 import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
+import { redirect, usePathname, useSearchParams } from "next/navigation"
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5"
 
 interface Props {
@@ -13,13 +13,16 @@ export const Pagination = ({ totalPages }: Props) => {
 
     const pathname = usePathname()
     const searchParams = useSearchParams()
-    
-    const currentPage = Number(searchParams.get('page')) ? Number(searchParams.get('page')) : 1 ;
+
+    const currentPage = Number(searchParams.get('page')) ? Number(searchParams.get('page') ) : 1;
+
+    if(currentPage < 1 ){
+        redirect(pathname)
+    }
 
     const allPages = generatePaginationNumbers(currentPage, totalPages)
-
+    
     const createPageUrl = (pageNumber: number | string) => {
-
         const params = new URLSearchParams(searchParams)
 
         if (pageNumber === '...') {
@@ -36,8 +39,6 @@ export const Pagination = ({ totalPages }: Props) => {
 
         params.set('page', pageNumber.toString());
         return `${pathname}?${params.toString()}`
-
-
     }
 
     return (
@@ -64,9 +65,13 @@ export const Pagination = ({ totalPages }: Props) => {
                             }
                             >
                                 <Link
-                                    className={clsx("page-link relative block py-1.5 px-3 border-0 outline-none transition-all duration-300 rounded", {
-                                        "bg-blue-600 text-white hover:text-white hover:bg-blue-600 shadow-md focus:shadow-md": page === currentPage
-                                    })}
+                                    className={clsx(
+                                        "page-link relative block py-1.5 px-3 border-0 outline-none transition-all duration-300 rounded text-gray-800",
+                                        {
+                                            "bg-blue-500 text-white hover:text-white hover:bg-blue-700 shadow-md focus:shadow-md": page === currentPage,
+                                            "bg-transparent hover:text-gray-800 hover:bg-gray-200 focus:shadow-none": page !== currentPage
+                                        }
+                                    )}
                                     href={createPageUrl(page)}
                                 >
                                     {page}
