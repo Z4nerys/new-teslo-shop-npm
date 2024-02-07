@@ -1,3 +1,5 @@
+export const revalidate = 60 // 60 segundos
+
 import { redirect } from "next/navigation";
 
 import { getPaginatedProductsWithImages } from "@/actions";

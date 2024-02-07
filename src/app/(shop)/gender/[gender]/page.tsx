@@ -1,8 +1,11 @@
-import { notFound, redirect } from "next/navigation";
-import { getPaginatedProductsWithImages } from "@/actions";
-import { Pagination, ProductGrid, Title } from "@/components";
-import { initialData } from "@/seed/seed";
+export const revalidate = 60 // 60 segundos
+
+import { redirect } from "next/navigation";
 import { Gender } from "@prisma/client";
+
+import { Pagination, ProductGrid, Title } from "@/components";
+import { getPaginatedProductsWithImages } from "@/actions";
+
 
 interface Props {
   params: {
@@ -13,7 +16,7 @@ interface Props {
   }
 }
 
-export default async function ({ params, searchParams }: Props) {
+export default async function GenderByPage({ params, searchParams }: Props) {
 
   const { gender } = params;
   /* if( id === 'kid') {

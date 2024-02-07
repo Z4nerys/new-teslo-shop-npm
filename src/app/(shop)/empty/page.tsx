@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { IoCartOutline } from "react-icons/io5";
 
-export default function () {
+export default function EmptyPage() {
     return (
 
       /* justify-center centro del eje x, items-center, centro del eje y */

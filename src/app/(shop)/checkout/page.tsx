@@ -10,7 +10,7 @@ const productsInCart = [
   initialData.products[2]
 ]
 
-export default function () {
+export default function CheckoutPage() {
   return (
     <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
       <div className="flex flex-col w-[1000px]"> {/* w-[1000px] este contenedor tiene mil pixeles */}
@@ -95,7 +95,7 @@ export default function () {
               <p className="mb-5">
                 {/* Disclaimer */}
                 <p className="text-xs">
-                  Al hacer click en "Colocar orden", aceptas nuestros <a href="#" className="underline">términos y condiciones</a> y <a href="#" className="underline">y pöliticas de privacidad</a>
+                  Al hacer click en &quot;Colocar orden&quot;, aceptas nuestros <a href="#" className="underline">términos y condiciones</a> y <a href="#" className="underline">y pöliticas de privacidad</a>
                 </p>
               </p>
 
