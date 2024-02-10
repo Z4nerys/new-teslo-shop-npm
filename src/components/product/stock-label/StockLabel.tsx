@@ -1,7 +1,7 @@
 'use client' // pongo use client xq quiero que cada vez que el
 //usuario lo use, se haga la peticion.
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { titleFont } from "@/config/fonts"
 import { getStockBySlug } from "@/actions";
 
@@ -12,19 +12,33 @@ interface Props {
 
 export const StockLabel = ({ slug }: Props) => {
 
+    const [stock, setStock] = useState(0)
+    const [isLoading, setIsLoading] = useState(true)
+
+
     useEffect(() => {
         getStock()
     })
 
     const getStock = async () => {
-        const stock = await getStockBySlug(slug)
-        console.log({stock})
-        return stock
+        const inStock = await getStockBySlug(slug)
+        setStock(inStock)
+        setIsLoading(false)
     }
 
     return (
-        <h1 className={`${titleFont.className} antialiased font-bold text-xl`}>
-            Stock: 150
-        </h1>
+        <>
+            {
+                isLoading ? (
+                    <h1 className={`bg-gray-300 animate-pulse`}>
+                        &nbsp;
+                    </h1>
+                ) : (
+                    <h1 className={`${titleFont.className} antialiased font-bold text-md`}>
+                        Stock: {stock}
+                    </h1>
+                )
+            }
+        </>
     )
 }

@@ -6,19 +6,16 @@ export const getStockBySlug = async ( slug: string ) => {
 
     try {
         
-        const product = await prisma.product.findFirst({
-            where: {
-                slug
-            }
+        const stock = await prisma.product.findFirst({
+            where: { slug },
+            select: { inStock: true }
         })
 
-        if ( !product ) return null
-
-        return product.inStock
+        return stock?.inStock ?? 0
         
     } catch (error) {
         console.log(error)
-        throw new Error('Error al obtener producto por slug')
+        return 0
     }
 
 }

@@ -1,15 +1,42 @@
 export const revalidate = 604800 // 7 dias. aprox
 
+import { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
 
 import { titleFont } from "@/config/fonts"
-import { ProductSlideshow, QuantitySelector, SizeSelector, StockLabel } from "@/components"
+import { ProductSlideshow, QuantitySelector, SizeSelector, StockLabel, Title } from "@/components"
 import { ProductMobileSlideshow } from "@/components/product/slideshow/ProductMobileSlideshow"
 import { getProductBySlug } from "@/actions"
 
 interface Props {
   params: {
     slug: string //slug xq asi se llama la ruta [slug], es lo que voy a recibir
+  }
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const slug = params.slug
+ 
+  // fetch data
+  const product = await getProductBySlug(slug)
+ 
+  // optionally access and extend (rather than replace) parent metadata
+  // esto es para acceder a los elementos del padre
+  //const previousImages = (await parent).openGraph?.images || []
+ 
+  return {
+    title: product?.title ?? 'Producto no encontrado',
+    description: product?.description ?? '',
+    openGraph: {
+      title: product?.title ?? 'Producto no encontrado',
+      description: product?.description ?? '',
+      //images: [], se recomienda todo el url "https://www.miweb.com/products/img/remera3.png" 
+      images:[`/products/${product?.images[1]}`]
+    },
   }
 }
 
@@ -44,10 +71,12 @@ export default async function ProductBySlugPage({ params }: Props) {
       </div>
       <div className="col-span-1 px-5">
 
-        <StockLabel slug={product.slug} />
-        <h1 className={`${titleFont.className} antialiased font-bold text-xl`}>
+        <h1 className={`${titleFont.className} antialiased font-bold text-xl mb-2`}>
           {product.title}
         </h1>
+        {/* si tengo que esperar que otros datos carguen, me conviene tenerlos a todos en un solo componente
+        asi realizo una sola consulta a la db, mientras menos consulta mejor */}
+        <StockLabel slug={product.slug} />
 
         <p className="text-lg mb-5">${product.price}</p>
 
