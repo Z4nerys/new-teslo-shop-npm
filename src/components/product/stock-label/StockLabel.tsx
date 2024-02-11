@@ -30,11 +30,11 @@ export const StockLabel = ({ slug }: Props) => {
         <>
             {
                 isLoading ? (
-                    <h1 className={`bg-gray-300 animate-pulse`}>
+                    <h1 className={`bg-gray-300 animate-pulse fade-in`}>
                         &nbsp;
                     </h1>
                 ) : (
-                    <h1 className={`${titleFont.className} antialiased font-bold text-md`}>
+                    <h1 className={`${titleFont.className} antialiased font-bold text-md fade-in`}>
                         Stock: {stock}
                     </h1>
                 )

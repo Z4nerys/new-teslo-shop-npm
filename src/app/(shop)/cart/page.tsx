@@ -27,7 +27,7 @@ export default function CartPage() {
           <div className="flex flex-col mt-5">
             <span className="text-xl">Agregar más items</span>
             <Link href="/" className="underline mb-5">
-              Continúa comprano
+              Continúa comprando
             </Link>
 
 

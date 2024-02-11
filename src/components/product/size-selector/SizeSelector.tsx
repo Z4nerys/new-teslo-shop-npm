@@ -4,12 +4,14 @@ import clsx from "clsx";
 //lo ignore en tiempo de transpilacion
 
 interface Props {
-    selectedSize: Size;
-    availableSizes: Size[];
+    selectedSize?: Size;
+    availableSizes: Size[]; // ['SX', 'M', 'XL', 'XXL']
+
+    onSizeChanged: (size: Size) => void
 }
 
 
-export const SizeSelector = ({ selectedSize, availableSizes }: Props) => {
+export const SizeSelector = ({ selectedSize, availableSizes, onSizeChanged }: Props) => {
   
     return (
     <div className="my-5">
@@ -20,10 +22,11 @@ export const SizeSelector = ({ selectedSize, availableSizes }: Props) => {
                 availableSizes.map(size => (
                     <button
                         key={size}
+                        onClick={ () => onSizeChanged(size) }
                         className={
                             clsx(
-                                "mx-2 hover:underline text-lg", {
-                                    'underline': size === selectedSize
+                                "mx-2 hover:underline hover:text-blue-600 text-lg", {
+                                    'underline text-blue-600': size === selectedSize
                                 }
                                 )
                         }
