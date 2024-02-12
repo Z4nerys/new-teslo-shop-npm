@@ -43,9 +43,7 @@ export const AddToCart = ({ product }: Props) => {
         }
 
         addProductToCart(cartProduct);
-        setTimeout(() => {
-            setPosted(false);
-        }, 3000);
+        setPosted(false);
         setQuantity(1)
         setSize(undefined)
 
