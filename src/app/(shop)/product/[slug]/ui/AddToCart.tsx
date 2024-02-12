@@ -10,8 +10,9 @@
 import { useState } from "react";
 
 import { QuantitySelector, SizeSelector } from "@/components"
-import { Product, Size } from "@/interfaces"
-import { IoWarningOutline } from "react-icons/io5";
+import { CartProduct, Product, Size } from "@/interfaces"
+import { IoCheckmarkCircleOutline, IoWarningOutline } from "react-icons/io5";
+import { useCartStore } from "@/store";
 
 
 interface Props {
@@ -20,14 +21,34 @@ interface Props {
 
 export const AddToCart = ({ product }: Props) => {
 
+    const addProductToCart = useCartStore(state => state.addProductToCart)
+
     const [size, setSize] = useState<Size | undefined>();
     const [quantity, setQuantity] = useState<number>(1)
-    const [posted, setposted] = useState(false)
+    const [posted, setPosted] = useState(false)
 
     const addToCart = () => {
-        setposted(true)
+        setPosted(true)
+
         if (!size) return
-        console.log({ quantity, size })
+
+        const cartProduct: CartProduct = {
+            id: product.id,
+            slug: product.slug,
+            title: product.title,
+            price: product.price,
+            quantity: quantity,
+            size: size,
+            image: product.images[0]
+        }
+
+        addProductToCart(cartProduct);
+        setTimeout(() => {
+            setPosted(false);
+        }, 3000);
+        setQuantity(1)
+        setSize(undefined)
+
     }
 
     return (
@@ -35,11 +56,20 @@ export const AddToCart = ({ product }: Props) => {
             {
                 posted && !size && (
                     <div className="flex bg-red-500 text-white rounded-md shadow-md px-4 py-2 fade-in items-center">
-                        <div>Debe de seleccionar una talla*</div>
+                        <div>Seleccione una talla.</div>
                         <div className="ml-auto"><IoWarningOutline size={25} /></div>
                     </div>
                 )
             }
+            {/* {
+                NOTIFICACION DE QUE SE AGREGO AL CARRITO
+                posted && size && (
+                    <div className="flex bg-green-500 text-white rounded-md shadow-md px-4 py-2 fade-in items-center">
+                        <div>Agregado al carrito.</div>
+                        <div className="ml-auto"><IoCheckmarkCircleOutline size={25} /></div>
+                    </div>
+                )
+            } */}
             {/* Selector de tallas */}
             <SizeSelector
                 selectedSize={size}
