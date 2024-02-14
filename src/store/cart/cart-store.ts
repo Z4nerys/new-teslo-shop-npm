@@ -6,6 +6,8 @@ interface State {
 
     cart: CartProduct[];
 
+    getTotalItems: () => number;
+
     //metodos para modificar el carrito
     addProductToCart: (product: CartProduct) => void
     // updateProductQuantity
@@ -18,10 +20,14 @@ export const useCartStore = create<State>()(
         (set, get) => ({
             cart: [],
 
+            getTotalItems: () => {
+                const { cart } = get()
+                return cart.reduce((total, item) => total + item.quantity, 0)
+            },
             //metodos
             addProductToCart: (product: CartProduct) => {
                 const { cart } = get()
-                console.log(cart)
+                
                 //1. revisar si el producto con la talla seleccionada, existe
                 const productInCart = cart.some(
                     (item) => (item.id === product.id && item.size === product.size)
@@ -41,10 +47,9 @@ export const useCartStore = create<State>()(
                 set({ cart: updateCartProducts })
             }
         }),
-        
+
         {
-            name: 'shopping-cart',
-            skipHydration: true
+            name: 'shopping-cart'
         }
 
     )
