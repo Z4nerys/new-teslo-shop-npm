@@ -3,15 +3,17 @@
 import { useEffect, useState } from "react"
 
 import Image from "next/image"
-
-import { QuantitySelector } from "@/components"
-import { useCartStore } from "@/store"
 import Link from "next/link"
+
+import { useCartStore } from "@/store"
+import { QuantitySelector } from "@/components"
 
 export const ProductsInCart = () => {
 
     const [loaded, setLoaded] = useState(false)
     const productsInCart = useCartStore(state => state.cart)
+    const updateProductQuantity = useCartStore(state => state.updateProductQuantity)
+    const removeProduct = useCartStore(state => state.removeProduct)
 
     useEffect(() => {
       setLoaded(true)
@@ -48,10 +50,12 @@ export const ProductsInCart = () => {
                             <p>${product.price}</p>
                             <QuantitySelector
                                 quantity={product.quantity}
-                                onQuantityChanged={ value => console.log(value)} 
+                                onQuantityChanged={ quantity => updateProductQuantity(product, quantity)}
                              />
 
-                            <button className="underline mt-3">
+                            <button className="underline mt-3"
+                                onClick={() => removeProduct(product)}
+                                >
                                 Remover
                             </button>
                         </div>
