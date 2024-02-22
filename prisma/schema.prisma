@@ -24,6 +24,11 @@ enum Gender {
   unisex
 }
 
+enum Role {
+  admin
+  user
+}
+
 model Category {
   id      String    @id @default(uuid())
   //esta es la relacion con category 
@@ -44,8 +49,8 @@ model Product {
   gender      Gender
 
   //Relaciones
-  category     Category       @relation(fields: [categoryId], references: [id])
-  categoryId   String
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
 
   ProductImage ProductImage[]
 
@@ -53,9 +58,24 @@ model Product {
 }
 
 model ProductImage {
-  id  Int    @id @default(autoincrement())
-  url String
+  id        Int     @id @default(autoincrement())
+  url       String
   // relaciones
   product   Product @relation(fields: [productId], references: [id])
   productId String
 }
+
+model User {
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  emailVerfied DateTime?
+  password     String
+  role         Role      @default(user)
+  image        String?
+}
+
+//para añadir a la db
+//npx prisma migrate dev
+//para agregar algo puntual
+//npx prisma migrate dev --name user-role

@@ -13,14 +13,20 @@ async function main() {
 
     //se usa el await y no el Promise.all x las relaciones de la db y tiene que ser
     //eliminado en orden
-    await prisma.productImage.deleteMany(),
-    await prisma.product.deleteMany(),
-    await prisma.category.deleteMany()
+    await prisma.user.deleteMany();
 
-    const { categories, products } = initialData
+    await prisma.productImage.deleteMany();
+    await prisma.product.deleteMany();
+    await prisma.category.deleteMany();
+
+    const { categories, products, users } = initialData
+
+    //insertar usuarios
+    await prisma.user.createMany({
+        data: users
+    })
 
     // insertar Categorias
-
     const categoriesData = categories.map(category => ({ name: category }))
 
     await prisma.category.createMany({
