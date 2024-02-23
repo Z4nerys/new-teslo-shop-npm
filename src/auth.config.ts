@@ -32,7 +32,7 @@ export const authConfig: NextAuthConfig = {
                     //sacamos el password para no devolverlo
                     //lo hacemos asi xq ya tenemos otra propiedad llamada password
                     const {password: _, ...rest} = user
-                    
+                    console.log(user)
                     return rest
             },
         }),
