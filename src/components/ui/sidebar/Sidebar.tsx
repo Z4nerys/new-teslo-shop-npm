@@ -1,10 +1,12 @@
 'use client'
 import Link from "next/link"
 import clsx from "clsx"
+import { useSession } from 'next-auth/react'
 
 import { useUIStore } from "@/store"
 //esto es x el onClick, evento del cliente
 import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPersonOutline, IoSearchOutline, IoShirtOutline, IoTicketOutline } from "react-icons/io5"
+import { logout } from "@/actions"
 
 
 export const Sidebar = () => {
@@ -13,6 +15,10 @@ export const Sidebar = () => {
     const isSideMenuOpen = useUIStore(state => state.isSideMenuOpen)
     const closeMenu = useUIStore(state => state.closeSideMenu)
 
+    const { data: session } = useSession()
+
+    const isAuthenticated = !!session?.user
+    
     return (
         <div>
             {/* background black  */}
@@ -73,7 +79,7 @@ export const Sidebar = () => {
 
                 <Link
                     href="/profile"
-                    className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                    className="flex items-center mt-10 p-2 hover:bg-gray-200 rounded transition-all"
                     onClick={closeMenu}
                 >
                     <IoPersonOutline size={30} />
@@ -82,27 +88,38 @@ export const Sidebar = () => {
 
                 <Link
                     href="/"
-                    className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                    className="flex items-center mt-10 p-2 hover:bg-gray-200 rounded transition-all"
                 >
                     <IoTicketOutline size={30} />
                     <span className="ml-3 text-lg">Ordenes</span>
                 </Link>
 
-                <Link
-                    href="/"
-                    className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-                >
-                    <IoLogInOutline size={30} />
-                    <span className="ml-3 text-lg">Ingresar</span>
-                </Link>
+                {
+                    !isAuthenticated && (
+                        <Link
+                            href="/auth/login"
+                            className="flex items-center mt-10 p-2 hover:bg-gray-200 rounded transition-all"
+                            onClick={closeMenu}
+                        >
+                            <IoLogInOutline size={30} />
+                            <span className="ml-3 text-lg">Ingresar</span>
+                        </Link>
+                    )
+                }
 
-                <Link
-                    href="/"
-                    className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-                >
-                    <IoLogOutOutline size={30} />
-                    <span className="ml-3 text-lg">Salir</span>
-                </Link>
+                {
+                    isAuthenticated && (
+                        <button
+                            className="w-full flex items-center mt-10 p-2 hover:bg-gray-200 rounded transition-all"
+                            onClick={() => logout()} //lo mando asi xq no puedo poner onClick={logout}
+                        //xq estaria mandando todo el evento como argumento y eso no se puede
+                        //en los servers actions
+                        >
+                            <IoLogOutOutline size={30} />
+                            <span className="ml-3 text-lg">Salir</span>
+                        </button>
+                    )
+                }
 
 
                 {/* line Separator */}
@@ -112,7 +129,7 @@ export const Sidebar = () => {
 
                 <Link
                     href="/"
-                    className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                    className="flex items-center mt-10 p-2 hover:bg-gray-200 rounded transition-all"
                 >
                     <IoShirtOutline size={30} />
                     <span className="ml-3 text-lg">Productos</span>
@@ -120,7 +137,7 @@ export const Sidebar = () => {
 
                 <Link
                     href="/"
-                    className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                    className="flex items-center mt-10 p-2 hover:bg-gray-200 rounded transition-all"
                 >
                     <IoTicketOutline size={30} />
                     <span className="ml-3 text-lg">Ordenes</span>
@@ -128,7 +145,7 @@ export const Sidebar = () => {
 
                 <Link
                     href="/"
-                    className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                    className="flex items-center mt-10 p-2 hover:bg-gray-200 rounded transition-all"
                 >
                     <IoPeopleOutline size={30} />
                     <span className="ml-3 text-lg">Usuarios</span>
