@@ -2,7 +2,6 @@
 
 import { signIn } from '@/auth.config';
 import { sleep } from '@/utils/sleep';
-import { AuthError } from 'next-auth';
 
 // ...
 
@@ -24,5 +23,22 @@ export async function authenticate(
             return 'CredentialsSignin'
         }
         return 'UnknownError'
+    }
+}
+
+//otra forma de login que es mas sencilla
+
+export const login = async(email: string, password: string) => {
+    try {
+        await signIn('credentials', {email, password})
+
+        return { ok: true}
+    } catch (error) {
+        //usar un loguer aca
+        console.log(error)
+        return {
+            ok: false,
+            message: 'No se pudo iniciar sesión'
+        }
     }
 }

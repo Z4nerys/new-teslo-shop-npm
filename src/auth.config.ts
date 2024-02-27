@@ -4,20 +4,43 @@ import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import bcryptjs from 'bcryptjs';
 
+const authenticatedRoutes = [
+    '/checkout',
+    '/checkout/address',
+]
+
 export const authConfig: NextAuthConfig = {
     pages: {
         signIn: '/auth/login',
         newUser: '/auth/new-account'
     },
     callbacks: {
+        //REVISAR ESTE MIDDLEWARE. funciona como middleware. authorized 
+        //https://neoris.udemy.com/course/nextjs-fh/learn/lecture/41266812#questions/21127026
+        //https://nextjs.org/learn/dashboard-app/adding-authentication
+        authorized({ auth, request: { nextUrl } }) {
+            const isLoggedIn = !!auth?.user;
+            const isOnDashboard = authenticatedRoutes.includes(nextUrl.pathname)
+            if (isOnDashboard) {
+                if (isLoggedIn) return true;
+                return false; // Redirect unauthenticated users to login page
+            } else if (isLoggedIn) {
+                return true
+                //return Response.redirect(new URL('/checkout/address', nextUrl));
+            }
+            return true;
+        },
         jwt({ token, user }) {
-            if ( user ) {
+            if (user) {
                 token.data = user
             }
             return token
         },
         session({ session, token, user }) {
             session.user = token.data as any;
+            /* los datos estan en el token, si estoy logueado y hago un cambio en la db, no se va a ver a menos
+            que me desloguee y me vuelva a loguear.
+            analizar el token e ir a la db para establecer los cambios */
             return session
         },
     },

@@ -9,8 +9,14 @@
 5. Ejecutar seed `npm run seed`
 5. Correr el proyecto: `npm run dev`.
 
+## se puede visualizar tambien la db con el comando
+`npx prisma studio`
+esto habre una url localhost para visualizar la db
+y sino se puede usar table plus.
 
 ## Correr en prod
 mis backticks = ``
+
+BUSCAR COMO PONER LOGUER del lado del servidor
 
 
