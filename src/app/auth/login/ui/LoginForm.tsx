@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+//import { useRouter } from "next/navigation"
 import { useFormState, useFormStatus } from "react-dom"
 import { IoInformationOutline } from "react-icons/io5"
 
@@ -12,16 +12,16 @@ import clsx from "clsx"
 export const LoginForm = () => {
 
     const [state, dispatch] = useFormState(authenticate, undefined)
-    const router = useRouter()
+    //const router = useRouter()
 
-    console.log({state})
+    console.log({ state })
     useEffect(() => {
-        if(state === 'Success'){
-            router.replace('/')
+        if (state === 'Success') {
+            //redireccionar
+            //router.replace('/')
+            window.location.replace('/')
         }
     }, [state])
-
-
 
     return (
         <form action={dispatch} className="flex flex-col">
@@ -31,6 +31,7 @@ export const LoginForm = () => {
                 type="email"
                 name="email"
                 autoComplete="email"
+                autoFocus
             />
 
             <label htmlFor="password">Contraseña</label>
@@ -41,21 +42,21 @@ export const LoginForm = () => {
                 autoComplete="current-password"
             />
             <LoginButton />
-            <div
-                className="flex h-8 items-end space-x-1"
-                aria-live="polite"
-                aria-atomic="true"
-            >
-                {state === "CredentialsSignin" && (
-                    <div className="flex flex-row fade-in">
+            {state === "CredentialsSignin" && (
+                <div
+                    className="flex h-8 items-end space-x-1"
+                    aria-live="polite"
+                    aria-atomic="true"
+                >
+                    <div className="flex flex-row fade-in -mb-2.5">
                         <IoInformationOutline className="h-5 w-5 text-red-500" />
                         <p className="text-sm text-red-500">Credenciales no son correctas</p>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
 
             {/* divisor line */}
-            <div className="flex items-center mt-5">
+            <div className="flex items-center my-5">
                 <div className="flex-1 border-t border-gray-500"></div>
                 <div className="px-2 text-gray-800">O</div>
                 <div className="flex-1 border-t border-gray-500"></div>
@@ -63,7 +64,7 @@ export const LoginForm = () => {
 
             <Link
                 href="/auth/new-account"
-                className="btn-secondary text-center mt-5">
+                className="btn-secondary text-center">
                 Crear una nueva cuenta
             </Link>
         </form>
@@ -79,10 +80,10 @@ function LoginButton() {
             type="submit"
             className={clsx({
                 "btn-primary": !pending,
-                "btn-disabled mb-5": pending
+                "btn-disabled": pending
             })}
             disabled={pending}
-            >
+        >
             Ingresar
         </button>
     );
