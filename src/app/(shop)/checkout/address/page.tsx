@@ -1,9 +1,22 @@
 //esto es estatico
+//esto se genera del lado del servidor
+//puedo poner la revalidacion para que se haga la consulta
+//a la db cada cierto tiempo
+//export const revalidate = 604800 // 7 dias. aprox
+//aca no lo necesito xq los paises no cambian pero si hay
+//algo que tengo que cambiar cad cierto tiempo
+//uso el revalidate
 
 import { Title } from '@/components';
 import { AddressForm } from './ui/AddressForm';
+import { getCountries } from '@/actions';
 
-export default function AddressPage() {
+export default async function AddressPage() {
+
+  //pongo esto aca xq addressPage es un server component
+  //esto queda en cache, xq lo hago del lado del servidor
+  const countries = await getCountries()
+
   return (
     <div className="flex flex-col sm:justify-center sm:items-center mb-72 px-10 sm:px-0">
 
@@ -11,7 +24,7 @@ export default function AddressPage() {
 
         <Title title="Dirección" subtitle="Dirección de entrega" />
 
-        <AddressForm />
+        <AddressForm countries={countries}/>
 
       </div>
     </div>

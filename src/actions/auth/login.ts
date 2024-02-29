@@ -10,7 +10,6 @@ export async function authenticate(
     formData: FormData,
 ) {
     try {
-        console.log(formData)
         await signIn('credentials', {
             ...Object.fromEntries(formData),
             redirect: false,
@@ -18,7 +17,7 @@ export async function authenticate(
 
         return 'Success'
     } catch (error) {
-        console.log(error)
+        //console.log(error)
         if((error as any ).type === 'CredentialsSignin'){
             return 'CredentialsSignin'
         }
@@ -35,7 +34,7 @@ export const login = async(email: string, password: string) => {
         return { ok: true}
     } catch (error) {
         //usar un loguer aca
-        console.log(error)
+        //console.log(error)
         return {
             ok: false,
             message: 'No se pudo iniciar sesión'

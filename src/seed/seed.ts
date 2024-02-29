@@ -1,4 +1,10 @@
 import bcryptjs from 'bcryptjs';
+import { countries } from './seed-countries';
+
+interface SeedCountry {
+    name: string;
+    id: string;
+}
 
 interface SeedProduct {
     description: string;
@@ -27,10 +33,12 @@ interface SeedData {
     users: SeedUser[],
     categories: string[],
     products: SeedProduct[],
+    countries: SeedCountry[]
 }
 
 
 export const initialData: SeedData = {
+    countries,
     users: [
         {
             email: 'gasty@gmail.com',

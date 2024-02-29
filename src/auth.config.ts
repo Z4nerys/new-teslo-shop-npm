@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma';
 import bcryptjs from 'bcryptjs';
 
 const authenticatedRoutes = [
-    '/checkout',
+    '/checkout/',
     '/checkout/address',
 ]
 

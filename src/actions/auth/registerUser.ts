@@ -23,7 +23,7 @@ export const registerUser = async (name: string, email: string, password: string
             user
         }
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return {
             ok: false,
             message: 'No se pudo crear el usuario',

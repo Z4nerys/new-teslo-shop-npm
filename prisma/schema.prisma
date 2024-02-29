@@ -75,7 +75,15 @@ model User {
   image        String?
 }
 
+model Country {
+  id   String @id
+  name String
+}
+
 //para añadir a la db
 //npx prisma migrate dev
 //para agregar algo puntual
 //npx prisma migrate dev --name user-role
+// npx prisma migrate dev --name country
+
+
