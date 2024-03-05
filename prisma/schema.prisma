@@ -53,6 +53,7 @@ model Product {
   categoryId String
 
   ProductImage ProductImage[]
+  OrderItem    OrderItem[]
 
   @@index([gender]) //esto es para buscar por indice, es mas rapido
 }
@@ -79,13 +80,17 @@ model User {
   //userId String @unique
   //que esta en la tabla userAddress
   address UserAddress?
+
+  //relaciones con order
+  Order Order[]
 }
 
 model Country {
-  id          String        @id
-  name        String
+  id           String         @id
+  name         String
   //relacion 1 a muchos con la tabla de abajo
-  UserAddress UserAddress[]
+  UserAddress  UserAddress[]
+  OrderAddress OrderAddress[]
 }
 
 //para añadir a la db
@@ -104,6 +109,7 @@ model UserAddress {
   address2   String?
   postalCode String
   phone      String
+  city       String
 
   // Relaciones
   //relacion 1 a muchos. userAddress de arriba
@@ -112,6 +118,65 @@ model UserAddress {
   //con UserAddress UserAddress[] que esta en la tabla de arriba
 
   //relacion 1 a 1
-  user User @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
   userId String @unique
+}
+
+model Order {
+  id           String    @id @default(uuid())
+  subtotal     Float
+  tax          Float
+  total        Float
+  itemsInOrder Int
+  isPaid       Boolean
+  paidAt       DateTime?
+  //puedo determinar si esta pagado con el paidAt
+  //no necesito el isPaid pero el curso esta hecho asi
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //Relaciones
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String
+  // relacion con la tabla de abajo. uno a muchos
+  OrderItem OrderItem[]
+
+  //1 a 1
+  OrderAddress OrderAddress?
+}
+
+model OrderItem {
+  id       String @id @default(uuid())
+  quantity Int
+  price    Float
+  size     Size
+
+  //relaciones
+  //se relaciona con order, y la order se relaciona con el usuario
+  order   Order  @relation(fields: [orderId], references: [id])
+  orderId String
+
+  //Relacion con el producto
+  //para obtener sus datos
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model OrderAddress {
+  id         String  @id @default(uuid())
+  firstName  String
+  lastName   String
+  address    String
+  address2   String?
+  postalCode String
+  city       String
+  phone      String
+
+  //relaciones
+  country   Country @relation(fields: [countryId], references: [id])
+  countryId String
+
+  Order   Order  @relation(fields: [OrderId], references: [id])
+  OrderId String @unique
 }

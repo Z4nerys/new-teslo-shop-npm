@@ -26,13 +26,13 @@ export const setUserAddress = async (address: Address, userId: string) => {
 const createOrReplaceAddress = async (address: Address, userId: string) => {
 
     try {
-
+        console.log({userId})
         const storeAddress = await prisma.userAddress.findUnique({
             where: { userId }
         })
 
         const addressToSave = {
-            userId,
+            userId: userId,
             address: address.address,
             address2: address.address2,
             countryId: address.country,
@@ -40,6 +40,7 @@ const createOrReplaceAddress = async (address: Address, userId: string) => {
             lastName: address.lastName,
             phone: address.phone,
             postalCode: address.postalCode,
+            city: address.city
             //country: address.country el country no va
             //xq tiene que ser string y prisma tiene un objeto
         }
@@ -53,7 +54,7 @@ const createOrReplaceAddress = async (address: Address, userId: string) => {
         }
 
         const updatedAddress = await prisma.userAddress.update({
-            where: {userId},
+            where: { userId },
             data: addressToSave
         })
 

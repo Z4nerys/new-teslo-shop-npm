@@ -7,7 +7,8 @@
 3. Levantar la base de datos: `docker compose up-d`.
 4. Correr las migraciones de Prisma `npx prisma migrate dev`
 5. Ejecutar seed `npm run seed`
-5. Correr el proyecto: `npm run dev`.
+6. Limpiar localstorage del navegador web.
+7. Correr el proyecto: `npm run dev`.
 
 ## se puede visualizar tambien la db con el comando
 `npx prisma studio`

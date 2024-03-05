@@ -13,6 +13,11 @@ async function main() {
 
     //se usa el await y no el Promise.all x las relaciones de la db y tiene que ser
     //eliminado en orden
+    await prisma.orderAddress.deleteMany();
+    await prisma.orderItem.deleteMany();
+    await prisma.order.deleteMany();
+
+    await prisma.userAddress.deleteMany()
     await prisma.user.deleteMany();
     await prisma.country.deleteMany();
 

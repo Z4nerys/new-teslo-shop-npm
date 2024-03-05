@@ -1,7 +1,7 @@
 'use server'
 
 import { signIn } from '@/auth.config';
-import { sleep } from '@/utils/sleep';
+import { sleep } from '@/utils';
 
 // ...
 

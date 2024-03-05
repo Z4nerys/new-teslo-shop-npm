@@ -1,11 +1,14 @@
 'use client'
 
 import { useForm } from "react-hook-form"
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 import clsx from "clsx";
-import { Country } from "@/interfaces";
 import { useAddressStore } from "@/store";
-import { useEffect } from "react";
+import { deleteUserAddress, setUserAddress } from "@/actions";
+import { Address, Country } from "@/interfaces";
+import { useRouter } from "next/navigation";
 //generado del lado del cliente
 
 
@@ -23,30 +26,60 @@ type FormInputs = {
 
 interface Props {
     countries: Country[];
+    userStoreAddress?: Partial<Address> 
+    //el Partial indica que todas las propiedades que digo que tiene que tener
+    //son opcionales. pueden venir o no
 }
 
-export const AddressForm = ({ countries }: Props) => {
+export const AddressForm = ({ countries, userStoreAddress = {} }: Props) => {
+
+    const router = useRouter()
 
     const { register, handleSubmit, formState: { isValid, errors }, reset } = useForm<FormInputs>({
         defaultValues: {
+            //sino hay nada en el localstorage, se aplica esto
+            ...(userStoreAddress as any),
+            rememberAddress: false
             //Todo: leer de la db
         }
     });
+
+    const { data: session } = useSession({
+        //el true significa, que si no esta logueado
+        //lo manda al login pero no deberia pasar ese caso
+        required: true
+    })
 
     const setAddress = useAddressStore(state => state.setAddress)
     const address = useAddressStore(state => state.address)
 
     useEffect(() => {
         if (address.firstName) {
+            //esto hace que si existe el firstName
+            //se le mande lo que esta en el localstorage
+            //Y el reset impacta los datos en cada campo
             reset(address)
         }
     }, [])
 
-
-
-    const onSubmit = (data: FormInputs) => {
+    const onSubmit = async(data: FormInputs) => {
         console.log({ data })
-        setAddress(data)
+        
+        const { rememberAddress, ...restAddress } = data
+        //este graba en el store
+        setAddress(restAddress)
+        
+        if (rememberAddress) {
+            //todo. server action
+            //este graba en la db
+            await setUserAddress(restAddress, session!.user.id)
+        } else {
+            //todo server action
+            //borrar lo que esta si no quiere recordar
+            await deleteUserAddress(session!.user.id)
+        }
+
+        router.push('/checkout')
     }
 
     return (

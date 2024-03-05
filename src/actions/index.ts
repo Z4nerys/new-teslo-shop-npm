@@ -4,7 +4,11 @@ export * from './auth/registerUser'
 
 export * from './country/get-countries'
 
+export * from './order/place-order'
+
 export * from './address/set-user-address'
+export * from './address/delete-user-address'
+export * from './address/get-user-address'
 
 export * from './product/product-pagination'
 export * from './product/get-product-by-slug'
