@@ -124,11 +124,11 @@ model UserAddress {
 
 model Order {
   id           String    @id @default(uuid())
-  subtotal     Float
+  subTotal     Float
   tax          Float
   total        Float
   itemsInOrder Int
-  isPaid       Boolean
+  isPaid       Boolean  @default(false)
   paidAt       DateTime?
   //puedo determinar si esta pagado con el paidAt
   //no necesito el isPaid pero el curso esta hecho asi
@@ -177,6 +177,6 @@ model OrderAddress {
   country   Country @relation(fields: [countryId], references: [id])
   countryId String
 
-  Order   Order  @relation(fields: [OrderId], references: [id])
-  OrderId String @unique
+  Order   Order  @relation(fields: [orderId], references: [id])
+  orderId String @unique
 }

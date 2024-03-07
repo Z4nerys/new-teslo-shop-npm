@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { useAddressStore, useCartStore } from "@/store"
 import { currencyFormat } from "@/utils"
 
@@ -9,15 +10,20 @@ import { placeOrder } from "@/actions"
 
 export const PlaceOrder = () => {
 
+    const router = useRouter()
+
     const address = useAddressStore(state => state.address)
     const { itemsInCart, subTotal, tax, total } = useCartStore(state => state.getSummaryInformation())
+
+    const [errorMessage, setErrorMessage] = useState('')
 
     //esto es para que no haga doble click en colocar orden.
     //para que no se cree repetida la orden
     const [isPlacingOrder, setIsPlacingOrder] = useState(false)
 
     const cart = useCartStore(state => state.cart)
-    
+    const clearCart = useCartStore(state => state.clearCart)
+
     // esto es para que no haya discrepancia entre lo que se
     //renderiza del servidor y en el cliente
     //para que queden los 2 con los mismos datos
@@ -37,12 +43,21 @@ export const PlaceOrder = () => {
             quantity: product.quantity,
             size: product.size
         }))
-        console.log({address, productsToOrder})
 
+        //Server Action
         const resp = await placeOrder(productsToOrder, address)
-        console.log({resp})
-        
-        setIsPlacingOrder(false)
+
+        if (!resp.ok) {
+            setIsPlacingOrder(false)
+            setErrorMessage(resp.message)
+            return
+        }
+        //si llego aca, todo salio bien!
+        clearCart();
+        router.replace(`/orders/${resp.order?.id}`)
+
+        //validar cuando se vuelve para atras despues de navegar
+        //validar: mientras espera cancelar el btn. "editar compra"
     }
 
     if (!loaded) {
@@ -92,11 +107,19 @@ export const PlaceOrder = () => {
                 <div className="mb-5">
                     {/* Disclaimer */}
                     <p className="text-xs">
-                        Al hacer click en &quot;Colocar orden&quot;, aceptas nuestros <a href="#" className="underline">términos y condiciones</a> y <a href="#" className="underline">y pöliticas de privacidad</a>
+                        Al hacer click en &quot;Colocar orden&quot;, aceptas nuestros {" "}
+                        <a href="#" className="underline">
+                            términos y condiciones
+                        </a>{" "}
+                        y{" "}
+                        <a href="#" className="underline">
+                            politicas de privacidad
+                        </a>
+                        .
                     </p>
                 </div>
 
-                {/* <p className="text-red-500">Error de creación</p> */}
+                <p className="text-red-500">{errorMessage}</p>
 
                 <button
                     //href="/orders/123"

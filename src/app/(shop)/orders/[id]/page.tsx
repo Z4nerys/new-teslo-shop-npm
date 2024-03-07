@@ -1,10 +1,13 @@
-import Link from "next/link";
+
 import Image from "next/image";
 
 import { Title } from "@/components";
 import { initialData } from "@/seed/seed";
 import clsx from "clsx";
 import { IoCardOutline } from "react-icons/io5";
+import { getOrderById } from "@/actions";
+import { redirect } from "next/navigation";
+import { currencyFormat } from '../../../../utils/currencyFormat';
 
 const productsInCart = [
   initialData.products[0],
@@ -19,60 +22,68 @@ interface Props {
 }
 
 
-export default function OrdersByIdPage({ params }: Props) {
+export default async function OrdersByIdPage({ params }: Props) {
 
   const { id } = params
 
-  //todo: verificar id
-  //redirect
+  //Server Action
+  const { ok, order } = await getOrderById(id)
+
+  if (!ok) {
+    redirect('/')
+  }
+
+  const address = order?.OrderAddress
 
   return (
     <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
       <div className="flex flex-col w-[1000px]"> {/* w-[1000px] este contenedor tiene mil pixeles */}
 
-        <Title title={`Orden #${id}`} />
+        <Title title={`Orden #${id.split('-').at(-1)}`} />{/* poner algo lindo o dejarlo */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
 
           {/* Carrito */}
           <div className="flex flex-col mt-5">
-
             <div
               className={
                 clsx(
                   "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
                   {
-                    "bg-red-500": false,
-                    "bg-green-700": true,
+                    "bg-red-500": !order!.isPaid,
+                    "bg-green-700": order!.isPaid,
                   }
                 )
               }
             >
               <IoCardOutline size={30} />
-              {/* <span className="mx-2">Pendiente</span> */}
-              <span className="mx-2">Pagada</span>
+              <span className="mx-2">
+                {
+                  order?.isPaid ? 'Pagada' : 'No pagada'
+                }
+              </span>
             </div>
 
             {/* items */}
             {
-              productsInCart.map(product => (
-                <div key={product.slug} className="flex mb-5">
+              order?.OrderItem.map(item => (
+                <div key={item.product.slug + '-' + item.size} className="flex mb-5">
                   <Image
-                    src={`/products/${product.images[0]}`}
+                    src={`/products/${item.product.ProductImage[0].url}`}
                     width={100}
                     height={100}
                     style={{
                       width: '100px',
                       height: '100px'
                     }}
-                    alt={product.title}
+                    alt={item.product.title}
                     className="mr-5 rounded"
                   />
 
                   <div>
-                    <p>{product.title}</p>
-                    <p>${product.price} x 3</p>
-                    <p className="font-bold">Subtotal: ${product.price * 3}</p>
+                    <p>{item.product.title}</p>
+                    <p>${item.price} x {item.quantity}</p>
+                    <p className="font-bold">Subtotal: ${currencyFormat(item.price * item.quantity)}</p>
                   </div>
 
                 </div>
@@ -85,13 +96,16 @@ export default function OrdersByIdPage({ params }: Props) {
 
             <h2 className="text-2xl font-bold mb-2">Direccíon de entrega</h2>
             <div className="mb-10">
-              <p className="text-xl">Fernando Herrera</p>
-              <p>Av. Siempre viva 123</p>
-              <p>Col. Centro</p>
-              <p>Alcaldía Cuauhtémoc</p>
-              <p>Ciudad de México</p>
-              <p>CP 1842</p>
-              <p>1124908012</p>
+              <p className="text-xl">
+                {address?.firstName} {address?.lastName}
+              </p>
+              <p>{address?.address}</p>
+              <p>{address?.address2}</p>
+              <p>{address?.postalCode}</p>
+              <p>
+                {address?.city}, {address?.countryId}
+              </p>
+              <p>{address?.phone}</p>
             </div>
             {/* DIvider */}
             <div
@@ -104,43 +118,39 @@ export default function OrdersByIdPage({ params }: Props) {
             <div className="grid grid-cols-2">
 
               <span>Nro. Productos</span>
-              <span className="text-right">3 artículos</span>
+              <span className="text-right">{order?.itemsInOrder === 1 ? '1 articulo' : `${order?.itemsInOrder} articulos`}</span>
 
               <span>Subtotal</span>
-              <span className="text-right">$ 100</span>
+              <span className="text-right">{currencyFormat(order!.subTotal)}</span>
 
               <span>Impuestos (15%)</span>
-              <span className="text-right">$ 100</span>
+              <span className="text-right">{currencyFormat(order!.tax)}</span>
 
-              <span className="mt-5 text-2xl">Total: (15%)</span>
-              <span className="mt-5 text-2xl text-right">$ 100</span>
-
+              <span className="mt-5 text-2xl">Total:</span>
+              <span className="mt-5 text-2xl text-right">{currencyFormat(order!.total)}</span>
             </div>
 
             <div className="mt-5 mb-2 w-full">
-
               <div
                 className={
                   clsx(
                     "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
                     {
-                      "bg-red-500": false,
-                      "bg-green-700": true,
+                      "bg-red-500": !order!.isPaid,
+                      "bg-green-700": order!.isPaid,
                     }
                   )
                 }
               >
                 <IoCardOutline size={30} />
-                {/* <span className="mx-2">Pendiente</span> */}
-                <span className="mx-2">Pagada</span>
+                <span className="mx-2">
+                  {
+                    order?.isPaid ? 'Pagada' : 'No pagada'
+                  }
+                </span>
               </div>
-
             </div>
-
           </div>
-
-
-
         </div>
       </div>
     </div>
