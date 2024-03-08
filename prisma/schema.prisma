@@ -144,6 +144,12 @@ model Order {
 
   //1 a 1
   OrderAddress OrderAddress?
+
+  transactionId String?
+  //es el id que da paypal, mp, stripe. el que me da la plataforma de pago.
+  //si tengo varios metodos de pago, tengo que identificar de quien es el id.
+  //ej: transactionIdMP,transactionIdPaypal, transactionIdStripe. etc para identificar
+  
 }
 
 model OrderItem {
