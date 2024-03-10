@@ -16,6 +16,7 @@ export default async function OrdersPage() {
     redirect('/auth/login')
   }
 
+
   return (
     <>
       <Title title="Orders" />
@@ -43,7 +44,7 @@ export default async function OrdersPage() {
               orders.map(order => (
                 <tr
                   key={order.id}
-                  className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-200"
+                  className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
                 >
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     #{order.id.split('-').at(-1)}
@@ -53,15 +54,15 @@ export default async function OrdersPage() {
                   </td>
                   <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                     {order.isPaid ? (
-                      <>
-                        <IoCardOutline className="text-green-600" />
-                        <span className='mx-2 text-green-600'>Pagada</span>
-                      </>
+                      <div className='bg-green-600 flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white'>
+                        <IoCardOutline size={20} />
+                        <span className='mx-2'>Pagada</span>
+                      </div>
                     ) : (
-                      <>
-                        <IoCardOutline className="text-red-600" />
-                        <span className='mx-2 text-red-600'>No Pagada</span>
-                      </>
+                      <div className='bg-red-600 flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white'>
+                        <IoCardOutline size={20} />
+                        <span className='mx-2'>No Pagada</span>
+                      </div>
                     )}
                   </td>
                   <td className="text-sm text-gray-900 font-light px-6 ">

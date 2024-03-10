@@ -6,7 +6,6 @@ import { Gender } from "@prisma/client";
 import { Pagination, ProductGrid, Title } from "@/components";
 import { getPaginatedProductsWithImages } from "@/actions";
 
-
 interface Props {
   params: {
     gender: Gender;
