@@ -32,7 +32,7 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
           //invoice_id: 'order_id', este es unico, si se lo mando, lo tengo que usar siempre
           //asi que x el momento no lo uso
           amount: {
-            currency_code: "", // o cualquier otra moneda que estés utilizando
+            currency_code: "USD", // o cualquier otra moneda que estés utilizando
             value: `${roundedAmount}`, // así lo transformo en string
           }
         }

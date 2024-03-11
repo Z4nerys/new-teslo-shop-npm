@@ -63,7 +63,6 @@ export const AddressForm = ({ countries, userStoreAddress = {} }: Props) => {
     }, [])
 
     const onSubmit = async(data: FormInputs) => {
-        console.log({ data })
         
         const { rememberAddress, ...restAddress } = data
         //este graba en el store

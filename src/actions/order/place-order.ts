@@ -24,7 +24,6 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
             message: 'No hay sesión de usuario'
         }
     }
-    //console.log({ productIds, address, userId })
 
     //obtener la informacion de los productos
     //Nota: podemos llevar 2 productos o mas con el mismo ID
