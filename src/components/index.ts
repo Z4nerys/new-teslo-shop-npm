@@ -5,6 +5,8 @@ export * from './paypal/PayPalButton'
 
 export * from './providers/Providers'
 
+export * from './orders/OrderStatus'
+
 export * from './product/slideshow/ProductSlideshow'
 export * from './product/slideshow/ProductSlideshow'
 

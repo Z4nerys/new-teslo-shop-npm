@@ -3,7 +3,7 @@ import Link from "next/link"
 import clsx from "clsx"
 import { useSession } from 'next-auth/react'
 
-import { useUIStore } from "@/store"
+import { useAddressStore, useUIStore } from "@/store"
 //esto es x el onClick, evento del cliente
 import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPersonOutline, IoSearchOutline, IoShirtOutline, IoTicketOutline } from "react-icons/io5"
 import { logout } from "@/actions"
@@ -14,6 +14,12 @@ export const Sidebar = () => {
     //si uso un hook tengo que poner que es 'use client'
     const isSideMenuOpen = useUIStore(state => state.isSideMenuOpen)
     const closeMenu = useUIStore(state => state.closeSideMenu)
+
+    const cleanAddress = useAddressStore(state => state.cleanAddress)
+    const onLogout = () => {
+        cleanAddress()
+        logout()
+    }
 
     const { data: session } = useSession()
 
@@ -100,7 +106,7 @@ export const Sidebar = () => {
 
                             <button
                                 className="w-full flex items-center mt-10 p-2 hover:bg-gray-200 rounded transition-all"
-                                onClick={() => logout()} //lo mando asi xq no puedo poner onClick={logout}
+                                onClick={onLogout} //lo mando asi xq no puedo poner onClick={logout}
                             //xq estaria mandando todo el evento como argumento y eso no se puede
                             //en los servers actions
                             >

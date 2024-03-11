@@ -15,8 +15,11 @@ interface State {
 
     //methods
     setAddress: (address: State['address']) => void
+    cleanAddress: () => void
     //esto significa que setAddress va a recibir todos los argumentos
     //que tengo en el state address. lo de arriba
+
+    // cleanUserAddress: () => void
 
 }
 
@@ -34,7 +37,21 @@ export const useAddressStore = create<State>()(
                 phone: '',
             },
             setAddress(address) {
-                set({address})
+                set({ address })
+            },
+            cleanAddress() {
+                set({
+                    address: {
+                        address: '',
+                        firstName: '',
+                        city: '',
+                        country: '',
+                        lastName: '',
+                        phone: '',
+                        postalCode: '',
+                        address2: ''
+                    }
+                })
             },
         }),
         {

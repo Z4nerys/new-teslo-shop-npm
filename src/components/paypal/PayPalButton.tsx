@@ -29,8 +29,10 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
     const transactionId = await actions.order.create({
       purchase_units: [
         {
-          //invoice_id: 'order_id', este es unico, si se lo mando, lo tengo que usar siempre
-          //asi que x el momento no lo uso
+          //invoice_id: 'order_id', este id se asocia a una orden del lado de paypal
+          //y si ya esta pagada, no se puede volver a pagar.
+          //para una misma orden.
+          invoice_id: orderId,
           amount: {
             currency_code: "USD", // o cualquier otra moneda que estés utilizando
             value: `${roundedAmount}`, // así lo transformo en string
