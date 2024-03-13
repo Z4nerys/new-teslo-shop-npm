@@ -23,7 +23,7 @@ export default async function OrdersPage() {
                 <UsersTable users={ users } />
                 {/* todo: hacer la paginacion */}
             </div>
-            <Pagination totalPages={6}/>
+            <Pagination totalPages={1}/>
         </>
     );
 }

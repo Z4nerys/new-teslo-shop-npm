@@ -74,7 +74,7 @@ export default async function OrdersPage() {
                         }
                     </tbody>
                 </table>
-                <Pagination totalPages={6} />
+                <Pagination totalPages={1} />
                 {/* todo: hacer la paginacion */}
             </div>
         </>

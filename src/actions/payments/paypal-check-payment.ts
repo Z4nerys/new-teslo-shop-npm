@@ -38,7 +38,8 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
             message: 'No se pudo actualizar el pago'
         }
     }
-    // TODO: sale bien y revalido el path
+    //el revalidatePath es para que veamos
+    //en pantalla reflejado los cambios 
     revalidatePath(`/orders/${orderId}`)
 
     return {
