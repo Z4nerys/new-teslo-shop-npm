@@ -57,22 +57,21 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
   const onApprove = async (data: OnApproveData, actions: OnApproveActions) => {
 
     const details = await actions.order?.capture()
-    
+
     if (!details) return
 
     //server action
-    await paypalCheckPayment( details.id!) //details.id es el transaction id de mi db
-    
+    await paypalCheckPayment(details.id!) //details.id es el transaction id de mi db
+
   }
 
   return (
-    <>
-      <PayPalButtons
-        //esto es para crear un ID de transaccion
-        createOrder={createOrder}
-        //esto para saber si se aprobo el pago. si salio todo exitoso end to end
-        onApprove={onApprove}
-      />
-    </>
+    <PayPalButtons
+      className='relative z-0'
+      //esto es para crear un ID de transaccion
+      createOrder={createOrder}
+      //esto para saber si se aprobo el pago. si salio todo exitoso end to end
+      onApprove={onApprove}
+    />
   )
 }

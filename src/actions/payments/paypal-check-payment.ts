@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 
 export const paypalCheckPayment = async (paypalTransactionId: string) => {
     const authToken = await getPayPalBearerToken()
-    console.log({ authToken })
     if (!authToken) {
         return {
             ok: false,
@@ -14,7 +13,6 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
         }
     }
     const respPayment = await verifyPayPalPayment(paypalTransactionId, authToken)
-    console.log({ respPayment })
     if (!respPayment) {
         return {
             ok: false,
@@ -22,7 +20,7 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
         }
     }
     const { status, purchase_units } = respPayment
-    console.log({ status })
+
     if (status !== 'COMPLETED') {
         return {
             ok: false,
@@ -31,7 +29,7 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
     }
 
     //Todo: Realizar actualizacion el la db
-    console.log({ status, purchase_units })
+    
     const { invoice_id: orderId } = purchase_units[0]
     const check = await checkOrderAsPaid(orderId)
     if (!check) {
@@ -52,8 +50,6 @@ const getPayPalBearerToken = async (): Promise<string | null> => {
     const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID
     const PAYPAL_SECRET = process.env.PAYPAL_SECRET
     const oauth2Url = process.env.PAYPAL_OAUTH_URL || ''
-    console.log({ PAYPAL_CLIENT_ID })
-    console.log({ PAYPAL_SECRET })
 
     const base64Token = Buffer.from(
         `${PAYPAL_CLIENT_ID}:${PAYPAL_SECRET}`,
@@ -126,7 +122,6 @@ const checkOrderAsPaid = async (orderId: string): Promise<boolean> => {
                 paidAt: new Date()
             }
         })
-        console.log({ update })
         return true
     } catch (error) {
         console.log(error)

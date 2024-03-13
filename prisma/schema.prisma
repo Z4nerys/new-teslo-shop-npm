@@ -67,13 +67,13 @@ model ProductImage {
 }
 
 model User {
-  id           String    @id @default(uuid())
-  name         String
-  email        String    @unique
-  emailVerfied DateTime?
-  password     String
-  role         Role      @default(user)
-  image        String?
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  emailVerified DateTime?
+  password      String
+  role          Role      @default(user)
+  image         String?
 
   //relacion 1 a 1
   //con user User @relation(fields: [userId], references: [id])
@@ -128,7 +128,7 @@ model Order {
   tax          Float
   total        Float
   itemsInOrder Int
-  isPaid       Boolean  @default(false)
+  isPaid       Boolean   @default(false)
   paidAt       DateTime?
   //puedo determinar si esta pagado con el paidAt
   //no necesito el isPaid pero el curso esta hecho asi
@@ -149,7 +149,6 @@ model Order {
   //es el id que da paypal, mp, stripe. el que me da la plataforma de pago.
   //si tengo varios metodos de pago, tengo que identificar de quien es el id.
   //ej: transactionIdMP,transactionIdPaypal, transactionIdStripe. etc para identificar
-  
 }
 
 model OrderItem {

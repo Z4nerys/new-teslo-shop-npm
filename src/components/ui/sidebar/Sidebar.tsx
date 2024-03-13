@@ -54,7 +54,7 @@ export const Sidebar = () => {
             <nav
                 className={
                     clsx(
-                        "fixed p-5 right-0 top-0 w-[500px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
+                        "overflow-y-scroll fixed p-5 right-0 top-0 w-[450px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
                         {
                             "translate-x-full": !isSideMenuOpen
                         }
@@ -145,16 +145,18 @@ export const Sidebar = () => {
                             </Link>
 
                             <Link
-                                href="/"
+                                href="/admin/orders"
                                 className="flex items-center mt-10 p-2 hover:bg-gray-200 rounded transition-all"
+                                onClick={closeMenu}
                             >
                                 <IoTicketOutline size={30} />
                                 <span className="ml-3 text-lg">Ordenes</span>
                             </Link>
 
                             <Link
-                                href="/"
+                                href="/admin/users"
                                 className="flex items-center mt-10 p-2 hover:bg-gray-200 rounded transition-all"
+                                onClick={closeMenu}
                             >
                                 <IoPeopleOutline size={30} />
                                 <span className="ml-3 text-lg">Usuarios</span>
