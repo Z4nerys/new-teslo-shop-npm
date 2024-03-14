@@ -27,7 +27,7 @@ export default async function GenderByPage({ params, searchParams }: Props) {
   const { products, totalPages } = await getPaginatedProductsWithImages({
     page,
     gender
-    })
+  })
 
   if (products.length === 0) {
     redirect(`/gender/${gender}`);
@@ -51,7 +51,7 @@ export default async function GenderByPage({ params, searchParams }: Props) {
         products={products}
       />
 
-      <Pagination totalPages={totalPages}/>
+      <Pagination totalPages={totalPages} />
     </>
   )
 }

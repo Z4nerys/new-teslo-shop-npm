@@ -50,7 +50,7 @@ export default async function OrdersPage() {
                                     <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {order.OrderAddress?.firstName} {order.OrderAddress?.lastName}
                                     </td>
-                                    <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    <td className="flex items-center text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {order.isPaid ? (
                                             <div className='bg-green-600 flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white'>
                                                 <IoCardOutline size={20} />
