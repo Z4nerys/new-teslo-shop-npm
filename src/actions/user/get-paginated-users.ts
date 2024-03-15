@@ -25,6 +25,9 @@ export const getPaginatedUsers = async () => {
         }
     } catch (error) {
         console.log(error)
-        return []
+        return {
+            ok: false,
+            message: 'No se pudo obtener datos'
+        }
     }
 }
