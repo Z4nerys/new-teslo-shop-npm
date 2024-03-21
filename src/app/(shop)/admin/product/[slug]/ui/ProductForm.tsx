@@ -1,14 +1,16 @@
 "use client";
 
-import { Product } from "@/interfaces";
+import { Category, Product } from "@/interfaces";
 
 interface Props {
   product: Product;
+  categories: Category[]
 }
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
-export const ProductForm = ({ product }: Props) => {
+export const ProductForm = ({ product, categories }: Props) => {
+  
   return (
     <form className="grid px-5 mb-16 grid-cols-1 sm:px-0 sm:grid-cols-2 gap-3">
       {/* Textos */}
@@ -55,7 +57,12 @@ export const ProductForm = ({ product }: Props) => {
         <div className="flex flex-col mb-2">
           <span>Categoria</span>
           <select className="p-2 border rounded-md bg-gray-200">
-            <option value="">[Seleccione]</option>
+            <option value=''>[Seleccione]</option>
+            {
+              categories.map(category => (
+                <option key={category.id} value={category.id}>{category.name}</option>
+              ))
+            }
           </select>
         </div>
 
@@ -71,12 +78,12 @@ export const ProductForm = ({ product }: Props) => {
 
           <span>Tallas</span>
           <div className="flex flex-wrap">
-            
+
             {
-              sizes.map( size => (
+              sizes.map(size => (
                 // bg-blue-500 text-white <--- si está seleccionado
-                <div key={ size } className="flex  items-center justify-center w-10 h-10 mr-2 border rounded-md">
-                  <span>{ size }</span>
+                <div key={size} className="flex  items-center justify-center w-10 h-10 mr-2 border rounded-md">
+                  <span>{size}</span>
                 </div>
               ))
             }
@@ -87,10 +94,10 @@ export const ProductForm = ({ product }: Props) => {
           <div className="flex flex-col mb-2">
 
             <span>Fotos</span>
-            <input 
+            <input
               type="file"
-              multiple 
-              className="p-2 border rounded-md bg-gray-200" 
+              multiple
+              className="p-2 border rounded-md bg-gray-200"
               accept="image/png, image/jpeg"
             />
 
