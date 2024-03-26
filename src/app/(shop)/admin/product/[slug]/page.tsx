@@ -15,29 +15,26 @@ interface Props {
 export default async function ProductPage({ params }: Props) {
 
     const { slug } = params
-
     /* //Hago las 2 a la vez xq no son dependientes, una de otra 
     const product = await getProductBySlug(slug)
     const categories = await getCategories() 
     */
-
     const [product, categories] = await Promise.all([
         getProductBySlug(slug),
         getCategories()
     ])
 
     // todo: new
-    if (!product) {
+    if (!product && slug !== 'new') {
         redirect('/admin/products')
     }
-
 
     const title = (slug === 'new') ? 'Nuevo producto' : 'Editar producto'
 
     return (
         <>
             <Title title={title} />
-            <ProductForm product={product} categories={categories} />
+            <ProductForm product={product ?? {}} categories={categories} />
         </>
     )
 }

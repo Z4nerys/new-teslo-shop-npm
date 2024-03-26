@@ -63,7 +63,7 @@ export default async function ProductBySlugPage({ params }: Props) {
           className="block md:hidden"
         />
 
-        {/* Desltop  Slideshow*/}
+        {/* Desktop  Slideshow*/}
         <ProductSlideshow
           title={product.title}
           images={product.images}

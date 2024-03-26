@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Swiper as SwiperObject } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, FreeMode, Navigation, Pagination, Thumbs } from 'swiper/modules'
+import { ProductImage } from '@/components';
 
 import 'swiper/css';
 
@@ -48,10 +49,10 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
                 {
                     images.map(image => (
                         <SwiperSlide key={image}>
-                            <Image
+                            <ProductImage
                                 width={1024}
                                 height={800}
-                                src={`/products/${image}`}
+                                src={image}
                                 alt={title}
                                 className='rounded-lg object-cover'
                             />
@@ -71,10 +72,10 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
                 {
                     images.map(image => (
                         <SwiperSlide key={image}>
-                            <Image
+                            <ProductImage
                                 width={300}
                                 height={300}
-                                src={`/products/${image}`}
+                                src={image}
                                 alt={title}
                                 className='rounded-lg object-fill'
                             />
