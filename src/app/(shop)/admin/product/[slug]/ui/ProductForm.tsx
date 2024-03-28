@@ -6,6 +6,7 @@ import Image from "next/image";
 import clsx from "clsx";
 import { Category, Product, ProductImage } from "@/interfaces";
 import { createUpdateProduct } from "@/actions";
+import { useRouter } from "next/navigation";
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
 interface Props {
@@ -24,9 +25,14 @@ interface FormInputs {
   gender: 'men' | 'women' | 'kid' | 'unisex';
   categoryId: string;
   //todo: Images
+
+  images?: FileList
 }
 
 export const ProductForm = ({ product, categories }: Props) => {
+
+  const router = useRouter()
+
   const {
     handleSubmit,
     register,
@@ -38,8 +44,9 @@ export const ProductForm = ({ product, categories }: Props) => {
     defaultValues: {
       ...product,
       tags: product.tags?.join(', '),
-      sizes: product.sizes ?? []
+      sizes: product.sizes ?? [],
       // Todo: images
+      images: undefined
     }
   })
 
@@ -57,9 +64,9 @@ export const ProductForm = ({ product, categories }: Props) => {
 
     const formData = new FormData();
 
-    const { ...productToSave } = data
+    const { images, ...productToSave } = data
 
-    if( product.id){
+    if (product.id) {
       formData.append('id', product.id ?? '')
     }
 
@@ -73,8 +80,20 @@ export const ProductForm = ({ product, categories }: Props) => {
     formData.append('categoryId', productToSave.categoryId)
     formData.append('gender', productToSave.gender)
 
-    const { ok } = await createUpdateProduct(formData)
-    console.log({ ok })
+    if (images) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append('images', images[i])
+      }
+    }
+
+    const { ok, product: updatedProduct } = await createUpdateProduct(formData)
+
+    if (!ok) {
+      alert('Producto no se pudo grabar')
+      return
+    }
+
+    router.replace(`/admin/product/${updatedProduct?.slug}`)
 
   }
 
@@ -142,7 +161,7 @@ export const ProductForm = ({ product, categories }: Props) => {
       {/* Selector de tallas y fotos */}
       <div className="w-full">
 
-      <div className="flex flex-col mb-2">
+        <div className="flex flex-col mb-2">
           <span>Inventario</span>
           <input type="number" className="p-2 border rounded-md bg-gray-200" {...register('inStock', { required: true, min: 0 })} />
         </div>
@@ -182,9 +201,10 @@ export const ProductForm = ({ product, categories }: Props) => {
             <span>Fotos</span>
             <input
               type="file"
+              {...register('images')}
               multiple
               className="p-2 border rounded-md bg-gray-200"
-              accept="image/png, image/jpeg"
+              accept="image/png, image/jpeg, image/avif"
             />
 
           </div>
