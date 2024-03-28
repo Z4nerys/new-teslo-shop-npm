@@ -85,11 +85,20 @@ export const createUpdateProduct = async (formData: FormData) => {
 
             if (formData.getAll('images')) {
                 const images = await uploadImages(formData.getAll('images') as File[])
-                console.log({ images })
+                if( !images ) {
+                    throw new Error('No se pudo cargar las imágenes, rollingback')
+                    //es necesario el trhow para que la transaccion se cancele
+                }
+                //actualizar imagenes
+                await prisma.productImage.createMany({
+                    data: images.map( image => ({
+                        url: image!,
+                        productId: product.id
+                    }))
+                })
             }
 
             return {
-                ok: true,
                 product
             }
         })
@@ -119,8 +128,9 @@ const uploadImages = async (images: File[]) => {
             try {
                 const buffer = await image.arrayBuffer();
                 const base64Image = Buffer.from(buffer).toString('base64')
-                return cloudinary.uploader.upload(`data:image/png;base64,${base64Image}`,{
-                    folder: 'Home'
+                return cloudinary.uploader.upload(`data:image/png;base64,${base64Image}`, {
+                    //folder: 'Home'
+                    //esto es para mandarlo dentro de una carpeta
                 })
                     .then(r => r.secure_url) //se usa el .then para que todas las promesas se
                 //resuelvan al mismo tiempo, con el await se harian una x una. y no queremos eso aca
@@ -132,8 +142,9 @@ const uploadImages = async (images: File[]) => {
         })
 
         const uploadedImages = await Promise.all(uploadPromises)
+        const isNull = uploadedImages.some( value => value === null)
+        if(isNull) return null
         return uploadedImages
-
     } catch (error) {
         console.log(error)
         return null
